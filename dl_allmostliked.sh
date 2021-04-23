@@ -1,4 +1,4 @@
 #!/bin/sh
-BaseSimpleURL="https://simpleertube.metalune.xyz"
-BaseHost="videos.lukesmith.xyz"
-wget -nv -O "mostliked-list.html" "${BaseSimpleURL}/${BaseHost}/videos/most-liked"
+BaseHost="$1"
+PageName="most-liked"
+./dl_page "${BaseHost}" "${PageName}"
