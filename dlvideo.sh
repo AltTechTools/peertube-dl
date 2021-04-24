@@ -1,6 +1,16 @@
 #!/bin/sh
+# Params:
+# 1	BaseUrl (creator's peertube instance)
+# 2	VidID (in url after /videos/watch/... )
+# 3	VidTitle (The title to use for the Folder, doesn't need to be the original Title)
+# 4	PicID [Optional; "" to not specify] (Thumbnail ID, often the same as VideoID, but can differ)
+# 5	Handle Existing [Optional; "" to not specify] (Defines how to handle allready existing Folders)
+#	  -Availbale Options: 'overwrite', 'timestamp'
 WorkDir=$(pwd)
-BaseURL=$1
+BaseURL="https://${1}"
+#echo "$BaseURL"
+#echo "exit"
+#exit
 VidID=$2
 PicID=$2
 [ "$4" = "" ] ||  PicID=$4
@@ -11,9 +21,21 @@ VidTitle=$3
 #echo "BaseURL: $BaseURL"
 #echo "VidTitle: $VidTitle"
 #exit
-[ -d "$VidTitle" ] && rm -r "$VidTitle"
-mkdir "$VidTitle"
-cd "$VidTitle"
+case "$5" in 
+  "overwrite")
+    [ -d "$VidTitle" ] && rm -f -r "$VidTitle" || { echo "Can't remove old version"; exit -1; }
+  ;;
+  "timestamp")
+    [ -d "$VidTitle" ] && VidTitle=$(echo "$(date +%s)_${VidTitle}")
+  ;;
+  *)
+    [ -d "$VidTitle" ] && { echo "Directory allready exits"; exit -1; }
+  ;;
+esac
+
+echo "before mkdir"
+mkdir "${VidTitle}/" || { echo "mkdir failed! exiting & skipping this Download ${VidID}/${VidTitle}"; exit; }
+cd "$VidTitle" || { echo "cd failed! exiting & skipping this Download ${VidID}/${VidTitle}"; exit; }
 PIC=$(echo "$BaseURL/static/thumbnails/$PicID.jpg")
 T1080p=$(echo "$BaseURL/download/torrents/$VidID-1080.torrent")
 T720p=$(echo "$BaseURL/download/torrents/$VidID-720.torrent")

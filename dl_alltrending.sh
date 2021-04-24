@@ -2,4 +2,4 @@
 
 BaseHost="$1"
 PageName="trending"
-./dl_page "${BaseHost}" "${PageName}"
+./dl_page.sh "${BaseHost}" "${PageName}"

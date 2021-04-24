@@ -5,4 +5,4 @@ BaseSimpleURL="https://simpleertube.metalune.xyz"
 BaseHost="$1"
 PageName="$2"
 
-wget -nv -O "recentlyadded-list.html" "${BaseSimpleURL}/${BaseHost}/videos/${PageName}"
+wget -nv -O "${PageName}-${BaseHost}-list.html" "${BaseSimpleURL}/${BaseHost}/videos/${PageName}"
