@@ -1,6 +1,6 @@
 #!/bin/sh
 Action="$1"
-BaseHost=$(./searchKnownChannel.sh "$2")||exit -1
+BaseHost=$(./searchKnownChannel.sh "$2") || exit -1
 #echo "$BaseHost"
 #echo done
 
@@ -42,6 +42,21 @@ case $Action in
   "trending")
     ./dl_alltrending.sh "$BaseHost"
   ;;
+  "name-recently"|"name-dlrecently"|"name-recentlyadded")
+    ./getChanelPageName.sh "$BaseHost" "recently-added"
+  ;;
+  "name-local")
+    ./getChanelPageName.sh "$BaseHost" "local"
+  ;;
+  "name-popular","name-mostliked")
+    ./getChanelPageName.sh "$BaseHost" "most-liked"
+  ;;
+  "name-trending")
+    ./getChanelPageName.sh "$BaseHost" "trending"
+  ;;
+  "name")
+    ./getChanelPageName.sh "$BaseHost" "${paramArr[@]}"
+  ;;
   *)
     echo "HELP"
     echo "Available Options: "
@@ -55,4 +70,4 @@ case $Action in
   ;;
 esac
 
-echo "paramarr: ${paramArr[@]}" 
+#echo "paramarr: ${paramArr[@]}" 

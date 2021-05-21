@@ -5,4 +5,8 @@ BaseSimpleURL="https://simpleertube.metalune.xyz"
 BaseHost="$1"
 PageName="$2"
 
-wget -nv -O "${PageName}-${BaseHost}-list.html" "${BaseSimpleURL}/${BaseHost}/videos/${PageName}"
+HtmlName=$(./getChanelPageName.sh "${BaseHost}" "${PageName}")
+
+#echo "Test htmlname: ${HtmlName}"
+
+wget -nv -O "${HtmlName}" --no-check-certificate  "${BaseSimpleURL}/${BaseHost}/videos/${PageName}"
