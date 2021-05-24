@@ -24,9 +24,13 @@ do
         [ -f "${VidID}.torrent" ] && /home/sgjdoomer/scripts/tools/transtorrentadd-custom.sh "${VidID}.torrent"
         cd "${WorkDir}"
         echo "${VidID}" >> downloaded.list
+        # test
+        tac rssfeed.xml | grep -A 100 -m 1 "${VidID}"
       fi
     else
       VidID="$(echo "$urlline" | awk '{print $2}' FS='/videos/watch/')"
     fi
   done <<< $(grep -e "<link>" -e "<enclosure type=\"application/x-bittorrent\"" rssfeed.xml | sed 's/ //g' | sed 's/<link>//' | sed 's/<\/link>//' | sed 's/<media:peerLinktype="application\/x-bittorrent"href="//' | sed 's/<enclosuretype="application\/x-bittorrent"url="//' | sed 's/"isDefault="true">//' | sed 's/"length="/{;}/' | awk '{print $1}' FS='{;}'| grep -e "/watch" -e ".torrent")
+  cd "$WorkDir"
+  rm rssfeed.xml
 done <<< $(grep -v "#" rssfeeds.list)
